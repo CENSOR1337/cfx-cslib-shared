@@ -10,7 +10,9 @@ export interface Vec2 {
 export type Vector2Type = Vector2 | Vec2;
 
 export class Vector2 implements Vec2 {
-	public static readonly type = "vec2";
+    public readonly type = "vec2";
+    public static readonly type = "vec2";
+    
 	public static create(v1: Vec2 | number): Vector2 {
 		if (typeof v1 === "number") return new Vector2(v1, v1);
 		return new Vector2(v1.x, v1.y);
