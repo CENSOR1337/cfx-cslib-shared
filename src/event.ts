@@ -3,16 +3,14 @@ import { Vector3 } from "./utils/Vector3";
 import { Vector4 } from "./utils/Vector4";
 import { CFXEventData } from "./interfaces/CFXEventData";
 
-const cfx = {
-	// @ts-ignore
-	addEventListener: global.addEventListener,
-	// @ts-ignore
-	triggerEvent: global.TriggerEvent,
-	// @ts-ignore
-	addNetEventListener: global.addNetEventListener,
-	// @ts-ignore
-	removeEventListener: global.removeEventListener,
-};
+export class Cfx {
+	public static addEventListener = global.addEventListener;
+	public static triggerEvent = global.TriggerEvent;
+	public static addNetEventListener = global.addNetEventListener;
+	public static removeEventListener = global.removeEventListener;
+	public static triggerClientEvent = global.TriggerClientEvent;
+	public static triggerServerEvent = global.TriggerServerEvent;
+}
 
 const getClassFromArguments = (...args: any[]): any[] => {
 	const newArgs: any[] = [];
@@ -42,45 +40,36 @@ const getClassFromArguments = (...args: any[]): any[] => {
 	return newArgs;
 };
 
-export function on(eventName: string, callback: (...args: any[]) => void): CFXEventData {
-	cfx.addEventListener(eventName, callback);
-	return {
-		eventName,
-		callback,
-	} as CFXEventData;
+export class Event {
+	public static on(eventName: string, callback: (...args: any[]) => void): CFXEventData {
+		Cfx.addEventListener(eventName, callback);
+		return {
+			eventName,
+			callback,
+		} as CFXEventData;
+	}
+
+	public static once(eventName: string, callback: (...args: any[]) => void): CFXEventData {
+		const eventData = Event.on(eventName, (...args: any[]) => {
+			callback(...args);
+			Event.off(eventData);
+		});
+		return eventData;
+	}
+
+	public static off(eventData: CFXEventData): void {
+		return Cfx.removeEventListener(eventData.eventName, eventData.callback);
+	}
+
+	public static emit(eventName: string, ...args: any[]): void {
+		return Cfx.triggerEvent(eventName, ...getClassFromArguments(...args));
+	}
 }
 
-export function onNet(eventName: string, callback: (...args: any[]) => void): CFXEventData {
-	cfx.addEventListener(eventName, callback, true);
-	return {
-		eventName,
-		callback,
-	} as CFXEventData;
-}
-
-export function once(eventName: string, callback: (...args: any[]) => void): CFXEventData {
-	const eventData = on(eventName, (...args: any[]) => {
-		callback(...args);
-		off(eventData);
-	});
-	return eventData;
-}
-
-export function onceNet(eventName: string, callback: (...args: any[]) => void): CFXEventData {
-	const eventData = onNet(eventName, (...args: any[]) => {
-		callback(...args);
-		off(eventData);
-	});
-	return eventData;
-}
-
-export function off(eventData: CFXEventData): void {
-	return cfx.removeEventListener(eventData.eventName, eventData.callback);
-}
-
-export function emit(eventName: string, ...args: any[]): void {
-	return cfx.triggerEvent(eventName, ...args);
-}
+export const on = Event.on;
+export const once = Event.once;
+export const off = Event.off;
+export const emit = Event.emit;
 
 export function log(...args: any[]) {
 	console.log(...args);
