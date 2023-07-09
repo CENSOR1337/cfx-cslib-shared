@@ -41,24 +41,21 @@ const getClassFromArguments = (...args: any[]): any[] => {
 };
 
 export class Event {
-	public static on(eventName: string, callback: (...args: any[]) => void): CFXEventData {
-		Cfx.addEventListener(eventName, callback);
-		return {
-			eventName,
-			callback,
-		} as CFXEventData;
+	public static on(eventName: string, listener: (...args: any[]) => void): CFXEventData {
+		Cfx.addEventListener(eventName, listener);
+		return { eventName, listener } as CFXEventData;
 	}
 
-	public static once(eventName: string, callback: (...args: any[]) => void): CFXEventData {
+	public static once(eventName: string, listener: (...args: any[]) => void): CFXEventData {
 		const eventData = Event.on(eventName, (...args: any[]) => {
-			callback(...args);
+			listener(...args);
 			Event.off(eventData);
 		});
 		return eventData;
 	}
 
 	public static off(eventData: CFXEventData): void {
-		return Cfx.removeEventListener(eventData.eventName, eventData.callback);
+		return Cfx.removeEventListener(eventData.eventName, eventData.listener);
 	}
 
 	public static emit(eventName: string, ...args: any[]): void {

@@ -1,4 +1,4 @@
 export interface CFXEventData {
 	eventName: string;
-	callback: (...args: any[]) => void;
+	listener: (...args: any[]) => void;
 }
