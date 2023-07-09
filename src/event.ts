@@ -12,7 +12,7 @@ export class Cfx {
 	public static triggerServerEvent = global.TriggerServerEvent;
 }
 
-export type listener = (...args: any[]) => void;
+export type listenerType = (...args: any[]) => void;
 
 export class Event {
 	public static getClassFromArguments(...args: any[]): any[] {
@@ -45,15 +45,12 @@ export class Event {
 		}
 	}
 
-	public static on(eventName: string, listener: listener): CFXEventData {
-		const handler = (...args: any[]) => {
-			listener(...Event.getClassFromArguments(...args));
-		};
-		Cfx.addEventListener(eventName, handler);
-		return { eventName, listener: handler } as CFXEventData;
+	public static on(eventName: string, listener: listenerType): CFXEventData {
+		Cfx.addEventListener(eventName, listener);
+		return { eventName, listener } as CFXEventData;
 	}
 
-	public static once(eventName: string, listener: listener): CFXEventData {
+	public static once(eventName: string, listener: listenerType): CFXEventData {
 		const eventData = Event.on(eventName, (...args: any[]) => {
 			listener(...args);
 			Event.off(eventData);
@@ -70,8 +67,6 @@ export class Event {
 	}
 }
 
-export const on = Event.on;
-export const once = Event.once;
 export const off = Event.off;
 export const emit = Event.emit;
 
