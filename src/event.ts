@@ -61,7 +61,7 @@ export class Event {
 	}
 
 	public static emit(eventName: string, ...args: any[]): void {
-		return Cfx.triggerEvent(eventName, ...getClassFromArguments(...args));
+		return Cfx.triggerEvent(eventName, ...args);
 	}
 }
 
