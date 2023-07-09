@@ -14,38 +14,43 @@ export class Cfx {
 
 export type listener = (...args: any[]) => void;
 
-const getClassFromArguments = (...args: any[]): any[] => {
-	const newArgs: any[] = [];
+export class Event {
+	public static getClassFromArguments(...args: any[]): any[] {
+		const newArgs: any[] = [];
 
-	for (const arg of args) {
-		const argType = arg.type;
-		if (!argType) continue;
-		switch (argType) {
+		for (const arg of args) {
+			const obj = this.getObjectClass(arg);
+			newArgs.push(obj);
+		}
+		return newArgs;
+	}
+
+	protected static getObjectClass(obj: any): any {
+		const objType = obj.type;
+		if (!objType) return obj;
+		switch (objType) {
 			case Vector2.type: {
-				newArgs.push(Vector2.create(arg));
-				continue;
+				return Vector2.create(obj);
 			}
 			case Vector3.type: {
-				newArgs.push(Vector3.create(arg));
-				continue;
+				return Vector3.create(obj);
 			}
 			case Vector4.type: {
-				newArgs.push(Vector4.create(arg));
-				continue;
+				return Vector4.create(obj);
 			}
 
 			default: {
-				newArgs.push(arg);
+				return obj;
 			}
 		}
 	}
-	return newArgs;
-};
 
-export class Event {
 	public static on(eventName: string, listener: listener): CFXEventData {
-		Cfx.addEventListener(eventName, listener);
-		return { eventName, listener } as CFXEventData;
+		const handler = (...args: any[]) => {
+			listener(...Event.getClassFromArguments(...args));
+		};
+		Cfx.addEventListener(eventName, handler);
+		return { eventName, listener: handler } as CFXEventData;
 	}
 
 	public static once(eventName: string, listener: listener): CFXEventData {
