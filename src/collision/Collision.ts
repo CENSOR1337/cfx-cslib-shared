@@ -1,4 +1,4 @@
-import { WordObject } from "../system/WordObject";
+import { WordObject } from "../objects/WordObject";
 import { Vector3 } from "../utils/Vector3";
 import { Dispatcher } from "../utils/Dispatcher";
 
