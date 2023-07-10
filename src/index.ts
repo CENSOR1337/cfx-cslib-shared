@@ -5,5 +5,4 @@ export * from "./interfaces";
 export * from "./event";
 export { Resource } from "./resource";
 export { Callback } from "./callback";
-export { Cfx } from "./cfx";
- 
+export { Citizen } from "./citizen";

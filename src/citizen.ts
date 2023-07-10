@@ -1,4 +1,4 @@
-export class Cfx {
+export class Citizen {
     public static addRawEventListener = global.addRawEventListener;
 	public static addEventListener = global.addEventListener;
     public static on = global.on;

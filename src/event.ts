@@ -2,7 +2,7 @@ import { Vector2 } from "./utils/Vector2";
 import { Vector3 } from "./utils/Vector3";
 import { Vector4 } from "./utils/Vector4";
 import { CFXEventData } from "./interfaces/CFXEventData";
-import { Cfx } from "./cfx";
+import { Citizen } from "./citizen";
 
 export type listenerType = (...args: any[]) => void;
 
@@ -38,7 +38,7 @@ export class Event {
 	}
 
 	public static on(eventName: string, listener: listenerType): CFXEventData {
-		Cfx.addEventListener(eventName, listener);
+		Citizen.addEventListener(eventName, listener);
 		return { eventName, listener } as CFXEventData;
 	}
 
@@ -51,11 +51,11 @@ export class Event {
 	}
 
 	public static off(eventData: CFXEventData): void {
-		return Cfx.removeEventListener(eventData.eventName, eventData.listener);
+		return Citizen.removeEventListener(eventData.eventName, eventData.listener);
 	}
 
 	public static emit(eventName: string, ...args: any[]): void {
-		return Cfx.triggerEvent(eventName, ...args);
+		return Citizen.triggerEvent(eventName, ...args);
 	}
 }
 
