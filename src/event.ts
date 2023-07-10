@@ -2,15 +2,7 @@ import { Vector2 } from "./utils/Vector2";
 import { Vector3 } from "./utils/Vector3";
 import { Vector4 } from "./utils/Vector4";
 import { CFXEventData } from "./interfaces/CFXEventData";
-
-export class Cfx {
-	public static addEventListener = global.addEventListener;
-	public static triggerEvent = global.TriggerEvent;
-	public static addNetEventListener = global.addNetEventListener;
-	public static removeEventListener = global.removeEventListener;
-	public static triggerClientEvent = global.TriggerClientEvent;
-	public static triggerServerEvent = global.TriggerServerEvent;
-}
+import { Cfx } from "./cfx";
 
 export type listenerType = (...args: any[]) => void;
 
@@ -69,10 +61,6 @@ export class Event {
 
 export const off = Event.off;
 export const emit = Event.emit;
-
-export function log(...args: any[]) {
-	console.log(...args);
-}
 
 export function everyTick(callback: () => void): number {
 	return setTick(callback);
