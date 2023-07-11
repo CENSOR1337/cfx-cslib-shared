@@ -8,7 +8,9 @@ interface listenerType {
 }
 
 export class Collision extends WordObject {
+	public static readonly all = new Array<Collision>();
 	public playersOnly: boolean = false;
+	public readonly id: string;
 	private interval: NodeJS.Timer;
 	private insideEntities: Set<number> = new Set();
 	private destroyed: boolean = false;
@@ -17,9 +19,11 @@ export class Collision extends WordObject {
 		exit: new Dispatcher(),
 	};
 
-	constructor(pos: Vector3) {
+	protected constructor(id: string, pos: Vector3) {
 		super(pos);
+		this.id = id;
 		this.interval = setInterval(this.onTick.bind(this), 1000);
+		Collision.all.push(this);
 	}
 
 	public onBeginOverlap(callback: (entity: number) => void): listenerType {
@@ -42,6 +46,10 @@ export class Collision extends WordObject {
 
 	public destroy() {
 		this.destroyed = true;
+
+		const index = Collision.all.indexOf(this);
+		if (index < 0) return;
+		Collision.all.splice(index, 1);
 	}
 
 	private onTick() {
