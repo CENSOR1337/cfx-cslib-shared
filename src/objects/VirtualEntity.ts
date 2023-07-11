@@ -8,12 +8,25 @@ const Event = {
 	onVirtualEntitySyncedMetaChange: appendInternalNamespace("onVirtualEntitySyncedMetaChange"),
 };
 
+interface veEvent {
+	onVirtualEntityStreamIn: string;
+	onVirtualEntityStreamOut: string;
+	onVirtualEntitySyncedMetaChange: string;
+}
+
 export class VirtualEntity extends WordObject {
 	public static readonly type = "VIRTUAL_ENTITY";
 	public readonly type = "VIRTUAL_ENTITY";
-	public static readonly Event = Event;
+	public readonly virtualEntityType: string;
+	public readonly event: veEvent;
 
-	constructor(pos: Vector3, dimension?: number) {
+	constructor(VirtualEntityType: string, pos: Vector3, dimension?: number) {
 		super(pos, dimension);
+		this.virtualEntityType = VirtualEntityType;
+		this.event = {
+			onVirtualEntityStreamIn: `${Event.onVirtualEntityStreamIn}:${this.virtualEntityType}`,
+			onVirtualEntityStreamOut: `${Event.onVirtualEntityStreamOut}:${this.virtualEntityType}`,
+			onVirtualEntitySyncedMetaChange: `${Event.onVirtualEntitySyncedMetaChange}:${this.virtualEntityType}`,
+		};
 	}
 }
