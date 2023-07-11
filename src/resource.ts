@@ -20,14 +20,14 @@ export class Resource {
 	}
 
 	public static onResourceStop(callback: () => void) {
-		return Resource.on("onResourceStop", (resource: string) => {
+		return Event.on("onResourceStop", (resource: string) => {
 			if (resource !== resourceName) return;
 			callback();
 		});
 	}
 
 	public static onResourceStart(callback: () => void) {
-		return Resource.on("onResourceStart", (resource: string) => {
+		return Event.on("onResourceStart", (resource: string) => {
 			if (resource !== resourceName) return;
 			callback();
 		});
