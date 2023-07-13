@@ -20,9 +20,9 @@ export class VirtualEntity extends WordObject {
 	public readonly virtualEntityType: string;
 	public readonly event: veEvent;
 
-	constructor(VirtualEntityType: string, pos: Vector3, dimension?: number) {
+	constructor(pos: Vector3, dimension?: number) {
 		super(pos, dimension);
-		this.virtualEntityType = VirtualEntityType;
+		this.virtualEntityType = this.constructor.name;
 		this.event = {
 			onVirtualEntityStreamIn: `${Event.onVirtualEntityStreamIn}:${this.virtualEntityType}`,
 			onVirtualEntityStreamOut: `${Event.onVirtualEntityStreamOut}:${this.virtualEntityType}`,
