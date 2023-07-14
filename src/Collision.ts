@@ -1,6 +1,6 @@
-import { WordObject } from "../objects/WordObject";
-import { Vector3 } from "../utils/Vector3";
-import { Dispatcher } from "../utils/Dispatcher";
+import { WordObject } from "./WordObject";
+import { Vector3 } from "./utils/Vector3";
+import { Dispatcher } from "./utils/Dispatcher";
 
 interface listenerType {
 	id: number;
@@ -22,7 +22,7 @@ export class Collision extends WordObject {
 	protected constructor(id: string, pos: Vector3) {
 		super(pos);
 		this.id = id;
-		this.interval = setInterval(this.onTick.bind(this), 1000);
+		this.interval = setInterval(this.onTick.bind(this), 300);
 		Collision.all.push(this);
 	}
 
@@ -46,7 +46,7 @@ export class Collision extends WordObject {
 
 	public destroy() {
 		this.destroyed = true;
-
+		this.onTick();
 		const index = Collision.all.indexOf(this);
 		if (index < 0) return;
 		Collision.all.splice(index, 1);
