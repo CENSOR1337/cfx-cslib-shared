@@ -1,6 +1,6 @@
-import { Vector3 } from "../utils/Vector3";
+import { Vector3 } from "./utils/Vector3";
 import { WordObject } from "./WordObject";
-import { appendInternalNamespace } from "../enum";
+import { appendInternalNamespace } from "./enum";
 
 const Event = {
 	onVirtualEntityStreamIn: appendInternalNamespace("onVirtualEntityStreamIn"),

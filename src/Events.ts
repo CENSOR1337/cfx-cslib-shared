@@ -2,11 +2,11 @@ import { Vector2 } from "./utils/Vector2";
 import { Vector3 } from "./utils/Vector3";
 import { Vector4 } from "./utils/Vector4";
 import { CFXEventData } from "./interfaces/CFXEventData";
-import { Citizen } from "./citizen";
+import { Citizen } from "./Citizen";
 
 export type listenerType = (...args: any[]) => void;
 
-export class Event {
+export class Events {
 	public static getClassFromArguments(...args: any[]): any[] {
 		const newArgs: any[] = [];
 
@@ -43,9 +43,9 @@ export class Event {
 	}
 
 	public static once(eventName: string, listener: listenerType): CFXEventData {
-		const eventData = Event.on(eventName, (...args: any[]) => {
+		const eventData = Events.on(eventName, (...args: any[]) => {
 			listener(...args);
-			Event.off(eventData);
+			Events.off(eventData);
 		});
 		return eventData;
 	}
@@ -59,8 +59,8 @@ export class Event {
 	}
 }
 
-export const off = Event.off;
-export const emit = Event.emit;
+export const off = Events.off;
+export const emit = Events.emit;
 
 export function everyTick(callback: () => void): number {
 	return setTick(callback);
