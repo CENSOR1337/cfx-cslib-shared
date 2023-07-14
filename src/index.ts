@@ -1,6 +1,6 @@
 export { Vector2, Vector3, Vector4, Dispatcher, log } from "./utils";
 export { CFXEventData } from "./interfaces";
-export { Events, off, emit, everyTick, clearEveryTick } from "./Events";
+export { Events, off, emit, everyTick, clearEveryTick, listenerType } from "./Events";
 export { Resource } from "./Resource";
 export { Collision } from "./Collision";
 export { Callback } from "./Callback";

@@ -2,7 +2,7 @@ import { Vector2 } from "./utils/Vector2";
 import { Vector3 } from "./utils/Vector3";
 import { Vector4 } from "./utils/Vector4";
 import { CFXEventData } from "./interfaces/CFXEventData";
-import { Citizen } from "./citizen";
+import { Citizen } from "./Citizen";
 
 export type listenerType = (...args: any[]) => void;
 
