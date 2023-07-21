@@ -27,6 +27,7 @@ export class Tickpool {
 		this.handlers.delete(id);
 		if (this.handlers.size > 0) return;
 		clearTick(this.tickId);
+		this.tickId = 0;
 	}
 
 	destroy() {
