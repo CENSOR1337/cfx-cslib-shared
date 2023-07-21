@@ -2,7 +2,7 @@ export class Dispatcher {
 	private listenerId = 0;
 	private listeners: Map<number, (...args: any[]) => void> = new Map();
 
-	public add(listener: (...args: any[]) => void) {
+	public add(listener: (...args: any[]) => void): number {
 		this.listenerId++;
 		this.listeners.set(this.listenerId, listener);
 		return this.listenerId;
