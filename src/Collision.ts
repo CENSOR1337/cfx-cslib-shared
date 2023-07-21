@@ -1,10 +1,11 @@
 import { WordObject } from "./WordObject";
 import { Vector3 } from "./utils/Vector3";
 import { Dispatcher } from "./utils/Dispatcher";
+import { Tickpool } from "./TickPool";
 
 interface listenerType {
 	id: number;
-	type: "enter" | "exit";
+	type: "enter" | "exit" | "overlapping";
 }
 
 export class Collision extends WordObject {
@@ -17,18 +18,40 @@ export class Collision extends WordObject {
 	private listeners = {
 		enter: new Dispatcher(),
 		exit: new Dispatcher(),
+		overlapping: new Dispatcher(),
 	};
+	private tickpool = new Tickpool();
+	private tickpoolIds = new Map<number, number>();
 
 	protected constructor(id: string, pos: Vector3) {
 		super(pos);
 		this.id = id;
 		this.interval = setInterval(this.onTick.bind(this), 300);
 		Collision.all.push(this);
+
+		this.onBeginOverlap((entity) => {
+			const poolId = this.tickpool.add(() => {
+				this.listeners.overlapping.broadcast(entity);
+			});
+			this.tickpoolIds.set(entity, poolId);
+		});
+
+		this.onEndOverlap((entity) => {
+			const poolId = this.tickpoolIds.get(entity);
+			if (!poolId) return;
+			this.tickpool.remove(poolId);
+			this.tickpoolIds.delete(entity);
+		});
 	}
 
 	public onBeginOverlap(callback: (entity: number) => void): listenerType {
 		const id = this.listeners.enter.add(callback);
 		return { id: id, type: "enter" };
+	}
+
+	public onOverlapping(callback: (entity: number) => void): listenerType {
+		const id = this.listeners.overlapping.add(callback);
+		return { id: id, type: "overlapping" };
 	}
 
 	public onEndOverlap(callback: (entity: number) => void) {
@@ -37,16 +60,15 @@ export class Collision extends WordObject {
 	}
 
 	public off(listener: listenerType) {
-		if (listener.type === "enter") {
-			this.listeners.enter.remove(listener.id);
-		} else {
-			this.listeners.exit.remove(listener.id);
-		}
+		const dispatcher = this.listeners[listener.type];
+		if (!dispatcher) return;
+		dispatcher.remove(listener.id);
 	}
 
 	public destroy() {
 		this.destroyed = true;
 		this.onTick();
+		this.tickpool.destroy();
 		const index = Collision.all.indexOf(this);
 		if (index < 0) return;
 		Collision.all.splice(index, 1);
