@@ -8,3 +8,4 @@ export { Citizen } from "./Citizen";
 export { EntityNative } from "./EntityNative";
 export { VirtualEntity } from "./VirtualEntity";
 export { WordObject } from "./WordObject";
+export { RGB, RGBA } from "./utils/RGBA";
