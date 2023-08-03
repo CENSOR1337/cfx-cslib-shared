@@ -1,4 +1,4 @@
-const namespace = "fivemjs:core";
+const namespace = "cslib:core";
 
 export function appendNamespace(name: string): string {
 	return `${namespace}:${name}`;
@@ -7,4 +7,3 @@ export function appendNamespace(name: string): string {
 export function appendInternalNamespace(name: string): string {
 	return `${namespace}:internal:${name}`;
 }
-

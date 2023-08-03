@@ -1,4 +1,4 @@
-import { Vector3 } from "./utils/Vector3";
+import { Vector3 } from "@cfx/shared";
 
 export class WordObject {
 	public pos: Vector3;
