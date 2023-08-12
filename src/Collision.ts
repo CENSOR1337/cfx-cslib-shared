@@ -1,5 +1,5 @@
 import { WordObject } from "./WordObject";
-import { Vector3 } from "./utils/Vector3";
+import { Vector3 } from "@cfx/shared";
 import { Dispatcher } from "./utils/Dispatcher";
 import { Tickpool } from "./TickPool";
 
@@ -8,7 +8,7 @@ interface listenerType {
 	type: "enter" | "exit" | "overlapping";
 }
 
-export class Collision extends WordObject {
+export abstract class Collision extends WordObject {
 	public static readonly all = new Array<Collision>();
 	public playersOnly: boolean = false;
 	public readonly id: string;
@@ -106,24 +106,6 @@ export class Collision extends WordObject {
 		}
 	}
 
-	protected isPosInside(pos: Vector3) {
-		// implement in child class
-		return false;
-	}
-
-	protected isEntityInside(entity: number) {
-		// implement in child class
-		return false;
-	}
-
-	protected isEntityValid(entity: number) {
-		if (!DoesEntityExist(entity)) return false;
-		if (!this.isEntityInside(entity)) return false;
-		return true;
-	}
-
-	protected getRevelantEntities(): number[] {
-		// implement in child class
-		return [];
-	}
+    protected abstract isEntityValid(entity: number): boolean;
+    protected abstract getRevelantEntities(): number[];
 }

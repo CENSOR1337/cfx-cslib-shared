@@ -1,4 +1,4 @@
-import { Vector3 } from "./utils/Vector3";
+import { Vector3 } from "@cfx/shared";
 import { WordObject } from "./WordObject";
 import { appendInternalNamespace } from "./enum";
 
